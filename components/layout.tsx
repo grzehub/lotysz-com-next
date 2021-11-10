@@ -5,7 +5,12 @@ import Link from "next/link";
 const name = "Lotr";
 export const siteTitle = "Next.js Lotr";
 
-export default function Layout({ children, home }) {
+interface LayoutProps {
+  children: React.ReactNode;
+  home?: boolean;
+}
+
+export const Layout = ({ children, home }: LayoutProps) => {
   return (
     <div>
       <Head>
@@ -70,4 +75,6 @@ export default function Layout({ children, home }) {
       )}
     </div>
   );
-}
+};
+
+export default Layout;
