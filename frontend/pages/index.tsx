@@ -1,12 +1,14 @@
 import Head from "next/head";
-import Link from "next/link";
+import { Button } from "@material-ui/core";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
+// import Link from "../components/link";
+import Link from "next/link";
 import Layout, { siteTitle } from "../components/layout";
 
-interface HomeProps {
+export interface ProjectProps {
   id: string;
   title: string;
-  date: string;
+  description: string;
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
@@ -24,12 +26,11 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   };
 };
 
-const Home = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = ({ projects }: { projects: ProjectProps[] }) => {
   return (
     <Layout home>
       <Head>
         <title>{siteTitle}</title>
-        {console.log(projects)}
       </Head>
 
       <section>
@@ -37,14 +38,20 @@ const Home = ({ projects }: InferGetStaticPropsType<typeof getStaticProps>) => {
         <ul>
           {projects.map(({ id, description, title }) => (
             <li key={id}>
-              <a>{title}</a>
-              {/* <Link href={`posts/${id}`}>
-                <a>{title}</a>
-              </Link> */}
+              <Link href={`/projects/${id}`}>{title}</Link>
               <br />
               {id}
               <br />
-              {description}
+              <span style={{ fontFamily: "Roboto-ffi Bold Old" }}>
+                stored: {description}
+              </span>
+              <Button
+                variant='contained'
+                color='primary'
+                style={{ fontFamily: "Roboto-ffi Bold" }}
+              >
+                {title}
+              </Button>
             </li>
           ))}
         </ul>

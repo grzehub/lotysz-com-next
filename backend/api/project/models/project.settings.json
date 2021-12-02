@@ -56,6 +56,11 @@
     },
     "friends": {
       "type": "richtext"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
     }
   }
 }

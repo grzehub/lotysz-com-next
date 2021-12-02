@@ -25,3 +25,31 @@ img {
   max-width: 100%;
   display: block;
 }
+
+@font-face {
+  font-family: "Roboto-ffi Regular";
+  src: url("/fonts/Robotoffi-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  font-variant-ligatures: common-ligatures;
+}
+
+@font-face {
+  font-family: "Roboto-ffi Bold";
+  src: url("/fonts/Robotoffi-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  font-variant-ligatures: common-ligatures;
+}
+
+@font-face {
+  font-family: "Roboto-ffi Bold Old";
+  src: url("/fonts/robotoffi-bold-webfont.woff") format("woff"),
+    url("/fonts/robotoffi-bold-webfont.woff2") format("woff2"),
+    url("/fonts/robotoffi-bold-webfont.svg") format("svg");
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}

@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import { ProjectProps } from "../pages";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -61,7 +62,7 @@ export function getAllPostIds() {
   });
 }
 
-export async function getPostData(id: string | string[]) {
+export async function getPostData(id: string | string[] | undefined) {
   const fullPath = path.join(postsDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
 
@@ -79,5 +80,26 @@ export async function getPostData(id: string | string[]) {
     id,
     contentHtml,
     ...(matterResult.data as { date: string; title: string }),
+  };
+}
+
+export async function getStrapiPostData({
+  params,
+}: {
+  params: { id: string };
+}) {
+  // params contains the post `id`.
+  // If the route is like /posts/1, then params.id is 1
+  const res = await fetch(`http://localhost:1337/projects/${params.id}`);
+  const project: ProjectProps[] = await res.json();
+
+  if (!project) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: { project }, // will be passed to the page component as props
   };
 }

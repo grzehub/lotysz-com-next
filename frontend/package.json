@@ -15,7 +15,13 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "remark": "^14.0.1",
-    "remark-html": "^15.0.0"
+    "remark-html": "^15.0.0",
+    "@emotion/cache": "latest",
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@emotion/server": "latest",
+    "@material-ui/core": "latest"
+
   },
   "devDependencies": {
     "@types/node": "^16.11.7",
