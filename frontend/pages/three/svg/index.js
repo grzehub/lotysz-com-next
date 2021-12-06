@@ -1,83 +1,54 @@
 import * as THREE from "three";
-import Layout from "../../../components/layout";
-import Head from "next/head";
-import React, { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import { Canvas, extend, useThree, useFrame } from "@react-three/fiber";
-import flatten from "lodash";
-import { SVGLoader as loader } from "three/examples/jsm/loaders/SVGLoader";
-import SVG_SHVITI_URL from "./DoFA_22.svg";
+import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import React, { Suspense, useMemo, useRef } from "react";
+import {
+  Canvas,
+  useLoader,
+  extend,
+  useThree,
+  useFrame,
+} from "@react-three/fiber";
 
 extend({ OrbitControls });
 
-// Promise of an SVG parsed into paths
-// with which the threejs engine will make shapes
-const svgResource = new Promise((resolve) =>
-  new loader().load("../images/DoFA_22.svg", (shapes) => {
-    resolve(
-      flatten(
-        shapes.paths.map((group, index) => {
-          return group.toShapes(true).map((shape) => {
-            const fillColor = group.userData.style.fill;
-            return { shape, color: fillColor, index };
-          });
-        })
-      )
-    );
-  })
-);
+const url = `http://localhost:3000/images/DoFA_22.svg`;
 
-/**
- * A very special thanks to @neftaly for open source contribution.
- * https://gist.github.com/neftaly/7c4d96f1ba37aada7f366b5393e59ddb
- *
- * Use a shape of the SVG to associate a Mesh Material with a Geometry
- */
-function SvgShape({ shape, color, index }) {
-  const mesh = useRef();
+function Shape({ shape, position, color }) {
+  if (!position) return null;
   return (
-    <mesh ref={mesh}>
-      <shapeBufferGeometry attach='geometry' args={[shape]} />
-      <meshBasicMaterial
-        aspect={window.innerWidth / window.innerHeight}
-        attach='material'
+    <mesh>
+      <meshNormalMaterial
         color={color}
-        opacity={1}
         side={THREE.DoubleSide}
-        flatShading={true}
         depthWrite={true}
-        /*
-          HACK: Offset SVG polygons by index
-          The paths from SVGLoader Z-fight.
-          This fix causes stacking problems with detailed SVGs.
-        */
-        polygonOffset
-        polygonOffsetFactor={index * -0.1}
+        transparent
+      />
+      <extrudeBufferGeometry
+        args={[shape, { bevelEnabled: false, depth: 300 }]}
       />
     </mesh>
   );
 }
 
 function Scene() {
-  const [shapes, set] = useState([]);
-  useEffect(() => svgResource.then(set), []);
-  console.log(shapes);
+  const data = useLoader(SVGLoader, url);
+  const shapes = useMemo(
+    () =>
+      data.paths.flatMap((g, index) =>
+        g.toShapes(true).map((shape) => ({ shape, color: g.color, index }))
+      ),
+    [data]
+  );
+
   return (
-    <group
-      color={new THREE.Color(0xb0b0b0)}
-      position={[-50, 100, 10]}
-      scale={[0.125, 0.125, 0.125]}
-      rotation={[
-        THREE.Math.degToRad(0),
-        THREE.Math.degToRad(180),
-        THREE.Math.degToRad(180),
-      ]}
-    >
-      {shapes.map((item) => (
-        <SvgShape key={item.shapes.uuid} {...item}></SvgShape>
-      ))}
-    </group>
+    <>
+      <group position={[-500, -500, 1000]} scale={[1, 1, 1]}>
+        {shapes.map((item) => (
+          <Shape key={item.shape.uuid} position={[0, 0, 0]} {...item} />
+        ))}
+      </group>
+    </>
   );
 }
 
@@ -89,7 +60,10 @@ const Camera = () => {
 
   const controls = useRef();
 
-  camera.position.z = 200;
+  camera.position.z = 2000;
+  camera.far = -10000;
+  camera.near = -10000;
+  camera.fov = 190;
 
   useFrame(() => controls.current.update());
 
@@ -97,45 +71,26 @@ const Camera = () => {
     <orbitControls
       ref={controls}
       args={[camera, domElement]}
-      autoRotate={true}
-      enableZoom={false}
+      autoRotate={false}
+      enableZoom={true}
     />
   );
 };
 
-/**
- * Put it all together.  Flat Shviti.svg floating around.
- * 0. Canvas gives us the WebGL rendering environment,
- * 2. Control the object in the 3D scene
- * 2. I still don't know what the light stuff does,
- * 3. And put the SVG'd-up Scene inside... ?
- * @return {JSX}
- */
-const FloatingShvitiExperience = () => {
+export default function App() {
   return (
-    <Layout>
-      <>
-        <Head>
-          <title> Let's try three.js</title>
-        </Head>
-        <header>threej.js</header>
-        <main>
-          <Canvas style={{ width: "100vw", height: "100vh" }}>
-            <Camera />
-            <ambientLight intensity={0.5} />
-            <spotLight intensity={0.5} position={[0, 0, 200]} />
-            <Scene />
-          </Canvas>
-        </main>
-      </>
-    </Layout>
+    <Canvas
+      // flat
+      // linear
+
+      // camera={{ fov: 75, position: [0, 0, 2000] }}
+      style={{ height: "100vh" }}
+    >
+      <Camera />
+      <ambientLight intensity={1} />
+      <Suspense fallback={null}>
+        <Scene />
+      </Suspense>
+    </Canvas>
   );
-};
-
-SvgShape.propTypes = {
-  color: PropTypes.any,
-  index: PropTypes.any,
-  shape: PropTypes.shape,
-};
-
-export default FloatingShvitiExperience;
+}

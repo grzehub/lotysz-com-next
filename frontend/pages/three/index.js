@@ -1,42 +1,45 @@
 import Layout from "../../components/layout";
 import Head from "next/head";
-import React, { useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import React, { useRef, useState, useMemo, Suspense } from "react";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
 import * as THREE from "three";
 import { last } from "lodash";
 // import { svgImage } from "../three/svg/DoFA_22.svg"
 
-const loader = new SVGLoader();
-loader.load(
-  "../images/DoFA_22.svg",
-  (data) => {
-    const paths = data.paths;
-    const group = new THREE.Group();
-
-    for (let i = 0; i < paths.length; i++) {
-      const path = paths[i];
-
-      const material = new THREE.MeshNormalMaterial({
-        color: path.color,
-        side: THREE.DoubleSide,
-      });
-
-      const shapes = SVGLoader.createShapes(path);
-
-      for (let j = 0; j < shapes.length; j++) {
-        const shape = shapes[j];
-        const geometry = new THREE.ShapeBufferGeometry(shape);
-        const mesh = new THREE.Mesh(geometry, material);
-        group.add(mesh);
-      }
-    }
-    console.log(paths);
-  },
-  function (xhr) {
-    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-  }
+const SvgShapeChild = ({ shape }) => (
+  <mesh>
+    <meshLambertMaterial attach='material' color='black' />
+    <shapeBufferGeometry attach='geometry' args={[shape]} />
+  </mesh>
 );
+
+const SvgShape = () => {
+  // const refSvg = useRef();
+  // const data = useLoader(SVGLoader, "../images/DoFA_22.svg");
+  // const shapes = useMemo(
+  //   () =>
+  //     data.paths.flatMap((g, index) =>
+  //       g.toShapes(true).map((shape) => ({ shape, color: g.color, index }))
+  //     ),
+  //   [data]
+  // );
+  // return (
+  //   <group
+  //     // ref={refSvg}
+  //     children={shapes.map((props, key) => (
+  //       // <SvgShape key={key} {...props} />
+  //       <SvgShapeChild key={key} {...props} />
+  //     ))}
+  //   />
+  // );
+  // return (
+  //   <mesh>
+  //     <meshNormalMaterial color='black' />
+  //     <shapeGeometry attach='geometry' />
+  //   </mesh>
+  // );
+};
 
 function boxes() {
   let arr = [];
@@ -74,6 +77,39 @@ export function Box({ rotPower, ...props }) {
 }
 
 const Three = () => {
+  const loader = new SVGLoader();
+  loader.load(
+    "../images/DoFA_22.svg",
+    (data) => {
+      const paths = data.paths;
+      const group = new THREE.Group();
+
+      for (let i = 0; i < paths.length; i++) {
+        const path = paths[i];
+        const fillColor = path.userData.style.fill;
+
+        const material = new THREE.MeshNormalMaterial({
+          color: new THREE.Color().setStyle(fillColor),
+          color: path.color,
+          side: THREE.DoubleSide,
+        });
+
+        const shapes = SVGLoader.createShapes(path);
+
+        for (let j = 0; j < shapes.length; j++) {
+          const shape = shapes[j];
+
+          const geometry = new THREE.ShapeBufferGeometry(shape);
+          const mesh = new THREE.Mesh(geometry, material);
+          group.add(mesh);
+        }
+      }
+      console.log(paths);
+    },
+    function (xhr) {
+      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    }
+  );
   return (
     <Layout>
       <>
@@ -85,9 +121,14 @@ const Three = () => {
           <Canvas style={{ height: "100vh" }}>
             <ambientLight />
             <pointLight position={[10, 10, 10]} />
-            {boxes().map((i) => (
-              <Box key={i} position={[i + -2, 0, 0]} rotPower={i / 10} />
-            ))}
+
+            <Suspense fallback={null}>
+              {boxes().map((i) => (
+                <Box key={i} position={[i + -2, 0, 0]} rotPower={i / 10} />
+              ))}
+              {/* <SvgShape position={[0, 0, -1]} /> */}
+              <group />
+            </Suspense>
           </Canvas>
         </main>
       </>
