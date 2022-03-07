@@ -14,10 +14,7 @@ const Home: VFC<{}> = () => {
   do {
     i = i + 1;
     warDays.push(i);
-  } while (i < warDaysCount);
-
-  console.log(warDaysCount);
-  console.log(warDays);
+  } while (i <= warDaysCount);
 
   return (
     <Layout home>
