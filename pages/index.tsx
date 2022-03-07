@@ -2,12 +2,12 @@ import Head from "next/head";
 import Box from "@material-ui/core/Box";
 import Layout, { siteTitle } from "../components/layout";
 import { VFC } from "react";
-import { differenceInCalendarDays } from "date-fns";
+import { differenceInDays } from "date-fns";
 
 const Home: VFC<{}> = () => {
   const today = new Date();
   const warDay = new Date(2022, 1, 24);
-  const warDaysCount = differenceInCalendarDays(today, warDay);
+  const warDaysCount = differenceInDays(today, warDay);
   const warDays = [];
   let i = 0;
 
@@ -15,6 +15,9 @@ const Home: VFC<{}> = () => {
     i = i + 1;
     warDays.push(i);
   } while (i < warDaysCount);
+
+  console.log(warDaysCount);
+  console.log(warDays);
 
   return (
     <Layout home>
