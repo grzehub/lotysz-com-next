@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "components/link.tsx"  ],
+, "components/link.tsx", "pages/three/fourty/index.tsz", "pages/three/fourty/index.js" ],
   "exclude": [
     "node_modules"
   ]
