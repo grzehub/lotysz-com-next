@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { Sky } from "@react-three/drei";
 import {
   Canvas,
@@ -187,56 +188,61 @@ export default function App() {
   const bDayDate = format(new Date(2022, 3, 3), "dd/MM/yyyy");
 
   return (
-    <Canvas
-      style={{ height: "100vh", cursor: "grab" }}
-      gl={{
-        powerPreference: "high-performance",
-        alpha: false,
-        antialias: false,
-        stencil: false,
-        depth: false,
-      }}
-    >
-      <Camera />
-      {/* <color attach='background' args={["#AAA"]} /> */}
-      <ambientLight intensity={1} />
-      <Sky />
-      <Suspense fallback={null}>
-        <Birds />
-        <text
-          position-z={5}
-          position-y={3}
-          text={bDayTitle}
-          font='/fonts/FavoritTrial-BoldXp.otf'
-          anchorX='center'
-          anchorY='middle'
-          fontSize={1}
-          color='black'
-        >
-          <meshPhongMaterial attach='material' side={THREE.DoubleSide} />
-        </text>
-        <Localization />
-        <text
-          position-z={5}
-          position-y={2}
-          text={bDayDate}
-          font='/fonts/FavoritTrial-BoldXp.otf'
-          anchorX='center'
-          anchorY='middle'
-          fontSize={1}
-          color='black'
-        >
-          <meshPhongMaterial attach='material' side={THREE.DoubleSide} />
-        </text>
-        <CounterBDay />
-      </Suspense>
-      <EffectComposer multisampling={0} disableNormalPass={true}>
-        <DotScreen
-          blendFunction={BlendFunction.NORMAL} // blend mode
-          angle={Math.PI * 0.5} // angle of the dot pattern
-          scale={1} // scale of the dot pattern
-        />
-      </EffectComposer>
-    </Canvas>
+    <>
+      <Head>
+        <title>40-cha Lotka i zaległe Kachy</title>
+      </Head>
+      <Canvas
+        style={{ height: "100vh", cursor: "grab" }}
+        gl={{
+          powerPreference: "high-performance",
+          alpha: false,
+          antialias: false,
+          stencil: false,
+          depth: false,
+        }}
+      >
+        <Camera />
+        {/* <color attach='background' args={["#AAA"]} /> */}
+        <ambientLight intensity={1} />
+        <Sky />
+        <Suspense fallback={null}>
+          <Birds />
+          <text
+            position-z={5}
+            position-y={3}
+            text={bDayTitle}
+            font='/fonts/FavoritTrial-BoldXp.otf'
+            anchorX='center'
+            anchorY='middle'
+            fontSize={1}
+            color='black'
+          >
+            <meshPhongMaterial attach='material' side={THREE.DoubleSide} />
+          </text>
+          <Localization />
+          <text
+            position-z={5}
+            position-y={2}
+            text={bDayDate}
+            font='/fonts/FavoritTrial-BoldXp.otf'
+            anchorX='center'
+            anchorY='middle'
+            fontSize={1}
+            color='black'
+          >
+            <meshPhongMaterial attach='material' side={THREE.DoubleSide} />
+          </text>
+          <CounterBDay />
+        </Suspense>
+        <EffectComposer multisampling={0} disableNormalPass={true}>
+          <DotScreen
+            blendFunction={BlendFunction.NORMAL} // blend mode
+            angle={Math.PI * 0.5} // angle of the dot pattern
+            scale={1} // scale of the dot pattern
+          />
+        </EffectComposer>
+      </Canvas>
+    </>
   );
 }
