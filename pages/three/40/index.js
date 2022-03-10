@@ -233,6 +233,18 @@ export default function App() {
           >
             <meshPhongMaterial attach='material' side={THREE.DoubleSide} />
           </text>
+          <text
+            position-z={5}
+            position-y={1}
+            text='zapraszamy na hamburgery w ogrodku oraz napoje na parapetach'
+            font='/fonts/FavoritTrial-BoldXp.otf'
+            anchorX='center'
+            anchorY='middle'
+            fontSize={0.3}
+            color='black'
+          >
+            <meshPhongMaterial attach='material' side={THREE.DoubleSide} />
+          </text>
           <CounterBDay />
         </Suspense>
         <EffectComposer multisampling={0} disableNormalPass={true}>
