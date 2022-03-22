@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import Layout, { siteTitle } from "../components/layout";
 import { VFC } from "react";
 import { differenceInDays } from "date-fns";

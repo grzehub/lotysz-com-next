@@ -26,6 +26,17 @@ img {
   display: block;
 }
 
+::-moz-selection {
+  /* Code for Firefox */
+  /* color: red; */
+  background: yellow;
+}
+
+::selection {
+  /* color: red; */
+  background: yellow;
+}
+
 @font-face {
   font-family: "Roboto-ffi Regular";
   src: url("/fonts/Robotoffi-Regular.woff2") format("woff2");

@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import "../styles/global.css";
 import Head from "next/head";
-// import { ThemeProvider } from '@material-ui/core/styles';
-import { CacheProvider } from "@emotion/react";
+import { CacheProvider, ThemeProvider } from "@emotion/react";
 import { AppProps } from "next/app";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline";
 import createCache from "@emotion/cache";
+import { theme } from "../styles/theme";
 
 export const cache = createCache({ key: "css", prepend: true });
 
@@ -26,10 +26,10 @@ export default function MyApp(props: AppProps) {
         <title>My page</title>
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-      {/* <ThemeProvider theme={theme}> */}
-      <CssBaseline />
-      <Component {...pageProps} />
-      {/* </ThemeProvider> */}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
     </CacheProvider>
   );
 }
