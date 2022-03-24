@@ -21,13 +21,13 @@ export const theme = createTheme({
           fontStyle: "italic",
           fontSize: "0.8rem",
           lineHeight: "1.4rem",
-          color: "rgba(0,0,0,0.6)",
+          // color: "rgba(0,0,0,0.6)",
         },
         subtitle2: {
           fontFamily: "Roboto",
           fontSize: "0.6rem",
           lineHeight: "1.4rem",
-          color: "rgba(0,0,0,0.6)",
+          // color: "rgba(0,0,0,0.6)",
         },
         body1: {
           fontFamily: "Roboto-ffi Regular",
