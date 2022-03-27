@@ -100,6 +100,7 @@ const Camera = () => {
       args={[camera, domElement]}
       autoRotate={true}
       enableZoom={true}
+      autoRotateSpeed={0.5}
     />
   );
 };
@@ -128,7 +129,7 @@ const Localization = () => {
         font='/fonts/FavoritTrial-BoldXp.otf'
         anchorX='center'
         anchorY='middle'
-        fontSize={0.5}
+        fontSize={0.25}
         color={hovered ? "white" : "black"}
         style={{ cursor: "pointer" }}
       >
@@ -138,12 +139,12 @@ const Localization = () => {
         <mesh
           onClick={handleClick}
           ref={ref}
-          position={[0, 0, 9]}
+          position={[0, 0, 9.5]}
           scale={hovered ? 1.2 : 1}
           onPointerOver={(event) => hover(true)}
           onPointerOut={(event) => hover(false)}
         >
-          <boxGeometry args={[5, 2, 0.2]} />
+          <boxGeometry args={[3, 1, 0.2]} />
           <meshStandardMaterial color={hovered ? "black" : "white"} />
         </mesh>
       </>
@@ -155,7 +156,7 @@ const CounterBDay = () => {
   const today = new Date();
   const [text, setText] = useState(today);
 
-  const bDayDateCount = new Date(2022, 3, 3);
+  const bDayDateCount = new Date(2022, 3, 10);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -165,7 +166,7 @@ const CounterBDay = () => {
     return () => clearInterval(interval);
   });
 
-  const toBDaysCount = differenceInSeconds(addHours(bDayDateCount, 15), text);
+  const toBDaysCount = differenceInSeconds(addHours(bDayDateCount, 14.5), text);
 
   return (
     <text
@@ -185,7 +186,7 @@ const CounterBDay = () => {
 
 export default function App() {
   const bDayTitle = "40-cha Lotka i zalegle Kachy";
-  const bDayDate = format(new Date(2022, 3, 3), "dd/MM/yyyy");
+  const bDayDate = format(new Date(2022, 3, 10), "dd/MM/yyyy");
 
   return (
     <>
@@ -203,20 +204,21 @@ export default function App() {
         }}
       >
         <Camera />
-        {/* <color attach='background' args={["#AAA"]} /> */}
+        <color attach='background' args={["#00F"]} />
         <ambientLight intensity={1} />
-        <Sky />
+        {/* <Sky /> */}
         <Suspense fallback={null}>
           <Birds />
           <text
             position-z={5}
             position-y={3}
-            text={bDayTitle}
+            // text={bDayTitle}
+            text='Nowy termin'
             font='/fonts/FavoritTrial-BoldXp.otf'
             anchorX='center'
             anchorY='middle'
             fontSize={1}
-            color='black'
+            color='white'
           >
             <meshPhongMaterial attach='material' side={THREE.DoubleSide} />
           </text>
@@ -224,7 +226,7 @@ export default function App() {
           <text
             position-z={5}
             position-y={2}
-            text={bDayDate}
+            text={`${bDayDate} 14.30`}
             font='/fonts/FavoritTrial-BoldXp.otf'
             anchorX='center'
             anchorY='middle'
@@ -236,7 +238,19 @@ export default function App() {
           <text
             position-z={5}
             position-y={1}
-            text='zapraszamy na hamburgery w ogrodku oraz napoje na parapetach'
+            text='Hamburgery w ogrodku oraz napoje na parapetach.'
+            font='/fonts/FavoritTrial-BoldXp.otf'
+            anchorX='center'
+            anchorY='middle'
+            fontSize={0.3}
+            color='black'
+          >
+            <meshPhongMaterial attach='material' side={THREE.DoubleSide} />
+          </text>
+          <text
+            position-z={5}
+            position-y={0.5}
+            text='Zakaz przynoszenia prezentow. Przynosimy ulubiony alkohol i chrupki.'
             font='/fonts/FavoritTrial-BoldXp.otf'
             anchorX='center'
             anchorY='middle'
@@ -248,11 +262,11 @@ export default function App() {
           <CounterBDay />
         </Suspense>
         <EffectComposer multisampling={0} disableNormalPass={true}>
-          <DotScreen
+          {/* <DotScreen
             blendFunction={BlendFunction.NORMAL} // blend mode
-            angle={Math.PI * 0.5} // angle of the dot pattern
-            scale={1} // scale of the dot pattern
-          />
+            angle={Math.PI * 0.1} // angle of the dot pattern
+            scale={2} // scale of the dot pattern
+          /> */}
         </EffectComposer>
       </Canvas>
     </>
