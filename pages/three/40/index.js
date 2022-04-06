@@ -156,7 +156,7 @@ const CounterBDay = () => {
   const today = new Date();
   const [text, setText] = useState(today);
 
-  const bDayDateCount = new Date(2022, 3, 10);
+  const bDayDateCount = new Date(2022, 3, 24);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -186,7 +186,7 @@ const CounterBDay = () => {
 
 export default function App() {
   const bDayTitle = "40-cha Lotka i zalegle Kachy";
-  const bDayDate = format(new Date(2022, 3, 10), "dd/MM/yyyy");
+  const bDayDate = format(new Date(2022, 3, 24), "dd/MM/yyyy");
 
   return (
     <>
@@ -204,7 +204,7 @@ export default function App() {
         }}
       >
         <Camera />
-        <color attach='background' args={["#00F"]} />
+        <color attach='background' args={["#329"]} />
         <ambientLight intensity={1} />
         {/* <Sky /> */}
         <Suspense fallback={null}>
